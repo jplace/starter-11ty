@@ -11,7 +11,9 @@ module.exports = function (config) {
   let markdown = markdownIt({
     html: true,
     linkify: true,
+    typographer: true,
   });
+  config.setLibrary("md", markdown);
   config.addFilter("markdown", (value) => markdown.render(value));
 
   // Formatting for dates
