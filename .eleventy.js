@@ -1,9 +1,16 @@
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const markdownIt = require("markdown-it");
 const fs = require("fs");
+const posthtml = require("posthtml");
+const beautifyHtml = require("js-beautify").html;
 const { DateTime } = require("luxon");
 
 module.exports = function (config) {
+  const isDev = process.env.PROJECT_DEV === "true";
+  if (isDev) {
+    console.log("Running with PROJECT_DEV set to true");
+  }
+
   // Adding this just for the absoluteUrl filter used in 11ty examples
   config.addPlugin(pluginRss);
 
@@ -37,8 +44,29 @@ module.exports = function (config) {
 
   // Pass through static assets
   config.addPassthroughCopy("./src/site/images");
+  config.addPassthroughCopy("./src/site/fonts");
   config.addPassthroughCopy("./src/site/_redirects");
   config.addPassthroughCopy("./src/site/_headers");
+
+  // Optimize HTML
+  config.addTransform("posthtml", async function (content, outputPath) {
+    if (outputPath.endsWith(".html")) {
+      const { html } = await posthtml([
+        require("posthtml-alt-always")(),
+        require("posthtml-link-noreferrer")(),
+        require("htmlnano")({
+          minifySvg: false,
+        }),
+      ]).process(content);
+
+      if (isDev) {
+        return beautifyHtml(html, { indent_size: 2 });
+      } else {
+        return html;
+      }
+    }
+    return content;
+  });
 
   // Browsersync to serve 404
   config.setBrowserSyncConfig({
