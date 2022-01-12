@@ -19,7 +19,7 @@
     "htmlnano": "^0.2.8",
     "js-beautify": "^1.13.5",
     "luxon": "^1.25.0",
-    "markdown-it": "^11.0.1",
+    "markdown-it": "^12.3.2",
     "nunjucks": "^3.2.2",
     "postcss-import": "^12.0.1",
     "postcss-mixins": "^6.2.3",
