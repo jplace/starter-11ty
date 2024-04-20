@@ -1,14 +1,14 @@
-@import "tailwindcss/base";
+@tailwind base;
 
 /* Custom fonts */
 /* None */
 
-@import "tailwindcss/components";
+@tailwind components;
 
 /* Custom components */
 /* None */
 
-@import "tailwindcss/utilities";
+@tailwind utilities;
 
 /* Custom utilities */
 /* None */
